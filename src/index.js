@@ -1,38 +1,27 @@
+// Deps
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+//service
+import { firebaseConfig, firebaseProvider,} from './firebase';
+// Components
 import App from './App';
-import {
-  firebaseConfig,
-  firebaseGetRooms,
-  firebaseProvider,
-  firebaseGetAllMessages,
-  firebaseGetLastMessage,
-  firebasePushMessage,
-  messageSpec
-} from './firebase';
+import Home from './home';
+// Styles
+import './index.css';
 
 const firebase = firebaseProvider(firebaseConfig);
 
 firebase.then(instance => {
-  firebaseGetRooms(instance).then(rooms => console.log(rooms));
-  firebaseGetAllMessages(instance, 'general', snap => console.log(snap.val()));
-  return instance;
-}).then(instance => {
-    window.setTimeout(() => {
-    firebaseGetLastMessage(instance, 'general', snap =>
-      { console.log('listener', snap.val()); });
-    }, 5000);
-    return instance;
-}).then(instance => {
-    window.setTimeout(() => {
-      firebasePushMessage(instance, 'general', messageSpec);
-    }, 7000);
+  ReactDOM.render((
+    <Router history={browserHistory}>
+      <Route path="/" firebase={instance} component={App}>
+        <IndexRoute component={Home} />
+      </Route>
+    </Router>
+    ),
+    document.getElementById('root')
+  );
 });
 
-import './index.css';
 
-
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
