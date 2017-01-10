@@ -113,5 +113,8 @@ class Home extends Component {
 
 export default Home
 
-// Check type of firebase instance
-Home.propTypes = { firebase: React.PropTypes.object };
+// Check type of the props pass from App
+Home.propTypes = {
+  firebase: React.PropTypes.object,
+  handleClick: React.PropTypes.func
+};

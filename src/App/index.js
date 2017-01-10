@@ -8,19 +8,23 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {activeComponent: 'home'};
-    this.handleComponentRedirect = this.handleComponentRedirect.bind(this);
+    this.state = {
+      user: {},
+      activeComponent: 'home'
+    };
+
+    this.handleHomeClick = this.handleHomeClick.bind(this);
     this.handleRedirect = this.handleRedirect.bind(this);
   }
 
   // Pass the form from home component and redirect to chat
-  handleComponentRedirect(a) {
+  handleHomeClick(a) {
     console.log('redirect', a);
   }
 
   handleRedirect(activeComponent) {
     return activeComponent === 'home' ?
-      <Home firebase={this.props.firebase} handleClick={this.handleComponentRedirect}/> :
+      <Home firebase={this.props.firebase} handleClick={this.handleHomeClick}/> :
       <p>soy un chat</p>
   }
 
