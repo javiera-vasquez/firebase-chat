@@ -1,11 +1,43 @@
 .App-header {
-  background-color: #EF6C00;
+  background-color: #FF1744;
   height: 50px;
   color: white;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
 .App-header h4 {
   margin: 0;
+  text-align: center;
   line-height: 50px;
   padding: 0 20px;
+}
+
+input[type='text'] {
+  padding: 0;
+  height: 36px;
+  line-height: 36px;
+  font-size: 16px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.form-input {
+  width: 100%;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.button {
+  height: 40px;
+  line-height: 32px;
+  font-size: 16px;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.button.call-to-action{
+  width: 100%;
+  color: white;
+  background-color: #FF1744;
 }

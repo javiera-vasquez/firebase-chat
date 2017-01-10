@@ -1,0 +1,45 @@
+.form-wrapper {
+  margin-top: 80px;
+  padding: 25px;
+  border-radius: 3px;
+  background-color: white;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+  border: 1px solid #FF1744;
+}
+
+.avatar-loop, .chat-loop {
+  margin-bottom: 50px;
+}
+
+.avatar-loop li{
+  width: 50px;
+  height: 50px;
+  display: inline;
+}
+
+.avatar-loop li img {
+  width: 50px;
+  height: 50px;
+  border-radius: 3px;
+  border: 2px solid white;
+}
+
+.avatar-loop li img.active {
+  border: 2px solid #FF1744;
+}
+
+.chat-loop li {
+  font-size: 14px;
+  width: 100%;
+  height: 32px;
+  line-height: 32px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  color: #555;
+  background-color: rgb(239, 248, 248);
+  border: 1px solid rgb(214, 224, 224);
+}
+
+.chat-loop li.active {
+  border: 1px solid #FF1744;
+}

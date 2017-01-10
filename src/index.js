@@ -6,7 +6,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { firebaseConfig, firebaseProvider,} from './firebase';
 // Components
 import App from './App';
-import Home from './home';
+import Home from './Home';
 // Styles
 import './index.css';
 
