@@ -1,7 +1,30 @@
 import React, { Component } from 'react';
+import Home from '../Home';
+//import Chat from '../Chat';
 import './App.css';
 
 class App extends Component {
+  // ES6 class constructor
+  constructor(props) {
+    super(props);
+
+    this.state = {activeComponent: 'home'};
+    this.handleComponentRedirect = this.handleComponentRedirect.bind(this);
+    this.handleRedirect = this.handleRedirect.bind(this);
+  }
+
+  // Pass the form from home component and redirect to chat
+  handleComponentRedirect(a) {
+    console.log('redirect', a);
+  }
+
+  handleRedirect(activeComponent) {
+    return activeComponent === 'home' ?
+      <Home firebase={this.props.firebase} handleClick={this.handleComponentRedirect}/> :
+      <p>soy un chat</p>
+  }
+
+  // render this component
   render() {
     return (
       <div className="App">
@@ -10,12 +33,7 @@ class App extends Component {
         </div>
 
         <div className="row center-xs">
-          {React.Children.map(this.props.children, child => {
-            return React.cloneElement(child, {
-              ...child.props,
-              firebase: this.props.route.firebase
-            });
-          })}
+          {this.handleRedirect('home')}
         </div>
       </div>
     );
@@ -23,4 +41,3 @@ class App extends Component {
 }
 
 export default App;
-

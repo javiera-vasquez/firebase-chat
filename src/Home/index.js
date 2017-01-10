@@ -66,7 +66,7 @@ class Home extends Component {
   goToChatRoom() {
     console.log(this.props);
     console.log('user', this.state.userName, this.state.userAvatar, this.state.roomSelected);
-    //this.props.router.push({pathname: '/room'});
+    this.props.handleClick('asdf');
   }
 
 
