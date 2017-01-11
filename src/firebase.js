@@ -42,7 +42,7 @@ export const firebaseGetRooms = db => {
 
 // Get all the messages of the room in a snap and pass a callback for each one
 export const firebaseGetAllMessages = (db, room, cb) => {
-  db.ref(makeChatRoute(room)).once('value').then(messages => {
+  return db.ref(makeChatRoute(room)).once('value').then(messages => {
     messages.forEach(message => { cb(message) });
   });
 }

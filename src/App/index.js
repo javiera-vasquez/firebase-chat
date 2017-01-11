@@ -19,15 +19,18 @@ class App extends Component {
 
   // Pass the form from home component and redirect to chat
   handleHomeClick(user) {
-    if(!user.name.length ) {return}
-    console.log('redirect');
-    this.setState({activeComponent: 'chat'});
+    if(!user.name.length ) return;
+
+    this.setState({
+      user: user,
+      activeComponent: 'chat'
+    });
   }
 
   handleRedirect(activeComponent) {
     return activeComponent === 'home' ?
       <Home firebase={this.props.firebase} handleClick={this.handleHomeClick}/> :
-      <Chat firebase={this.props.firebase} />
+      <Chat firebase={this.props.firebase} user={this.state.user}/>
   }
 
   // render this component
