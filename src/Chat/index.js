@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { firebaseGetAllMessages, firebasePushMessage } from '../firebase';
+import { firebaseGetAllMessages, firebaseGetLastMessage, firebasePushMessage, messageSpec } from '../firebase';
 
 class Chat extends Component {
   // ES6 class constructor
@@ -12,17 +12,25 @@ class Chat extends Component {
 
   // make a firebase call after mounting this component
   componentDidMount() {
-    let getMessages = [];
-
-    firebaseGetAllMessages(this.props.firebase, this.props.user.room, snap => {
-        getMessages = getMessages.concat(snap.val());
-      }).then(() => {
-        console.log('in then', getMessages);
-        this.setState({messages: getMessages});
+    firebaseGetLastMessage(this.props.firebase, this.props.user.room, message => {
+      this.setState({
+        messages: this.state.messages.concat(message.val())
+      });
     });
+
+    // firebaseGetAllMessages(this.props.firebase, this.props.user.room, snap => {
+    //     getMessages = getMessages.concat(snap.val());
+    //   }).then(() => {
+    //     console.log('in then', getMessages);
+    //     this.setState({messages: getMessages});
+    // });
   }
 
-  newMessage() {}
+
+
+  newMessage(message) {
+    firebasePushMessage(this.props.firebase, this.props.user.room, messageSpec)
+  }
 
 
   // render this component
@@ -31,6 +39,7 @@ class Chat extends Component {
 
     return (
       <div className="form-wrapper col-xs-8">
+        <button onClick={this.newMessage}>send message</button>
         {this.state.messages.map(message => {
           return <p>{message.text}</p>
         })}
