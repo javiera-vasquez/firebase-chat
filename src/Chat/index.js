@@ -22,9 +22,7 @@ class Chat extends Component {
   // make a firebase call after mounting this component
   componentDidMount() {
     firebaseGetLastMessage(this.props.firebase, this.props.user.room, message => {
-      this.setState({
-        messages: this.state.messages.concat(message.val())
-      });
+      this.setState({messages: [message.val()].concat(this.state.messages)});
     });
   }
 
@@ -60,9 +58,7 @@ class Chat extends Component {
 
   // render this component
   render() {
-    let wrapperHeight = {
-      height: [(window.innerHeight - 50), 'px'].join('')
-    }
+    let wrapperHeight = {height: [(window.innerHeight - 50), 'px'].join('')};
 
     return (
       <div style={wrapperHeight} className="col-xs-10 chat-wrapper">
