@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
-import { firebaseGetAllMessages, firebaseGetLastMessage, firebasePushMessage, messageSpec } from '../firebase';
+import { firebaseGetLastMessage, firebasePushMessage } from '../firebase';
+import ChatMessageLoop from './ChatMessageLoop';
 
 class Chat extends Component {
   // ES6 class constructor
   constructor(props) {
     super(props);
 
-    this.state = {messages: []};
-    this.newMessage = this.newMessage.bind(this);
+    this.state = {
+      message: '',
+      messages: []
+    };
+
+    this.SendNewMessage = this.SendNewMessage.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   // make a firebase call after mounting this component
@@ -17,32 +23,49 @@ class Chat extends Component {
         messages: this.state.messages.concat(message.val())
       });
     });
-
-    // firebaseGetAllMessages(this.props.firebase, this.props.user.room, snap => {
-    //     getMessages = getMessages.concat(snap.val());
-    //   }).then(() => {
-    //     console.log('in then', getMessages);
-    //     this.setState({messages: getMessages});
-    // });
   }
 
 
+  // lisen for changes in the input name
+  handleInputChange(event) {
+    this.setState({message: event.target.value});
+  }
 
-  newMessage(message) {
-    firebasePushMessage(this.props.firebase, this.props.user.room, messageSpec)
+  SendNewMessage() {
+    let message = {
+      author:{
+        name: this.props.user.name,
+        user_image_url: this.props.user.avatar
+      },
+      text: this.state.message,
+      timestamp: '1483737061'
+    }
+
+    firebasePushMessage(this.props.firebase, this.props.user.room, message);
+
+    this.setState({message: ''});
   }
 
 
   // render this component
   render() {
-    console.log('in render', this.state.messages);
-
     return (
-      <div className="form-wrapper col-xs-8">
-        <button onClick={this.newMessage}>send message</button>
-        {this.state.messages.map(message => {
-          return <p>{message.text}</p>
-        })}
+      <div className="col-xs-8">
+        <h4>#{this.props.user.room}</h4>
+        <div className="chat-wrapper">
+
+          <ChatMessageLoop messages={this.state.messages} />
+
+          <input
+            type="text"
+            className="chat-input"
+            value={this.state.message}
+            onChange={this.handleInputChange}
+            placeholder="Nombre de usuario"
+          />
+
+          <button className="button chat-button" onClick={this.SendNewMessage}>send message</button>
+        </div>
       </div>
     )
   };
