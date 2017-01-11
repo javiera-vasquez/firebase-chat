@@ -71,5 +71,5 @@ export const firebasePushMessage = (db, room, message) => {
 }
 
 function makeChatRoute(room) {
-  return ['rooms/', room, '/messages'].join('');
+  return `rooms/${room}/messages`;
 }

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+
 import { firebaseGetLastMessage, firebasePushMessage } from '../firebase';
 import ChatMessageLoop from './ChatMessageLoop';
+
+import './Chat.css'
 
 class Chat extends Component {
   // ES6 class constructor
@@ -31,40 +34,55 @@ class Chat extends Component {
     this.setState({message: event.target.value});
   }
 
-  SendNewMessage() {
-    let message = {
-      author:{
-        name: this.props.user.name,
-        user_image_url: this.props.user.avatar
-      },
-      text: this.state.message,
-      timestamp: '1483737061'
-    }
+  SendNewMessage(event) {
+    event.preventDefault();
 
-    firebasePushMessage(this.props.firebase, this.props.user.room, message);
+    firebasePushMessage(this.props.firebase, this.props.user.room, this.createNewMessage({
+      name: this.props.user.name,
+      avatar: this.props.user.avatar,
+      message: this.state.message
+    }));
 
     this.setState({message: ''});
+  }
+
+  createNewMessage(params) {
+    return {
+      author:{
+        name: params.name,
+        user_image_url: params.avatar
+      },
+      text: params.message,
+      timestamp: Date.now().toString()
+    }
   }
 
 
   // render this component
   render() {
+    let wrapperHeight = {
+      height: [(window.innerHeight - 50), 'px'].join('')
+    }
+
     return (
-      <div className="col-xs-8">
+      <div style={wrapperHeight} className="col-xs-10 chat-wrapper">
         <h4>#{this.props.user.room}</h4>
-        <div className="chat-wrapper">
 
+        <div className="chat-wrapper-loop">
           <ChatMessageLoop messages={this.state.messages} />
+        </div>
 
-          <input
-            type="text"
-            className="chat-input"
-            value={this.state.message}
-            onChange={this.handleInputChange}
-            placeholder="Nombre de usuario"
-          />
-
-          <button className="button chat-button" onClick={this.SendNewMessage}>send message</button>
+        <div className="chat-wrapper-form">
+          <form onSubmit={this.SendNewMessage}>
+            <input
+              type="text"
+              className="chat-input"
+              value={this.state.message}
+              onChange={this.handleInputChange}
+              placeholder=""
+            />
+            <button className="button chat-button" type="submit">Enviar!</button>
+          </form>
         </div>
       </div>
     )
