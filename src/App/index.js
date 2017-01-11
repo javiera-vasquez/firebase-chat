@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Home from '../Home';
-//import Chat from '../Chat';
+import Chat from '../Chat';
 import './App.css';
 
 class App extends Component {
@@ -18,14 +18,16 @@ class App extends Component {
   }
 
   // Pass the form from home component and redirect to chat
-  handleHomeClick(a) {
-    console.log('redirect', a);
+  handleHomeClick(user) {
+    if(!user.name.length ) {return}
+    console.log('redirect');
+    this.setState({activeComponent: 'chat'});
   }
 
   handleRedirect(activeComponent) {
     return activeComponent === 'home' ?
       <Home firebase={this.props.firebase} handleClick={this.handleHomeClick}/> :
-      <p>soy un chat</p>
+      <Chat firebase={this.props.firebase} />
   }
 
   // render this component
@@ -37,7 +39,7 @@ class App extends Component {
         </div>
 
         <div className="row center-xs">
-          {this.handleRedirect('home')}
+          {this.handleRedirect(this.state.activeComponent)}
         </div>
       </div>
     );

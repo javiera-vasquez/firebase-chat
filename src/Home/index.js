@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Router } from 'react-router';
 import { random } from 'lodash';
 
 import PlaceHolders from './PlaceHolders'
@@ -64,11 +63,12 @@ class Home extends Component {
 
   // check the form and go to the selected chat room
   goToChatRoom() {
-    console.log(this.props);
-    console.log('user', this.state.userName, this.state.userAvatar, this.state.roomSelected);
-    this.props.handleClick('asdf');
+    this.props.handleClick({
+      name: this.state.userName,
+      avatar: this.state.userAvatar,
+      room: this.state.roomSelected
+    });
   }
-
 
 
   // render this component
