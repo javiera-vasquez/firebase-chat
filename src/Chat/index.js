@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
-import { firebaseGetLastMessage, firebasePushMessage } from '../firebase';
+import { firebaseGetLastMessage, firebasePushMessage, firebaseRemoveListener } from '../firebase';
 import ChatMessageLoop from './ChatMessageLoop';
 
 import './Chat.css'
+
 
 class Chat extends Component {
   // ES6 class constructor
@@ -17,17 +18,24 @@ class Chat extends Component {
 
     this.SendNewMessage = this.SendNewMessage.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.backToHome = this.backToHome.bind(this);
   }
 
   // make a firebase call after mounting this component
   componentDidMount() {
-    firebaseGetLastMessage(this.props.firebase, this.props.user.room, message => {
-      this.setState({messages: [message.val()].concat(this.state.messages)});
-    });
+    firebaseGetLastMessage(this.props.firebase, this.props.user.room, firebaseCbFunc, this);
+  }
+
+  componentWillUnmount() {
+    firebaseRemoveListener(this.props.firebase, this.props.user.room, firebaseCbFunc, this);
   }
 
 
   // lisen for changes in the input name
+  backToHome() {
+    this.props.handleClick(this.props.user, 'Home');
+  }
+
   handleInputChange(event) {
     this.setState({message: event.target.value});
   }
@@ -62,7 +70,10 @@ class Chat extends Component {
 
     return (
       <div style={wrapperHeight} className="col-xs-10 chat-wrapper">
-        <h4>#{this.props.user.room}</h4>
+        <h4>
+          <span>#{this.props.user.room}</span>
+          <a className="back-to-home" onClick={this.backToHome}>Volver</a>
+        </h4>
 
         <div className="chat-wrapper-loop">
           <ChatMessageLoop messages={this.state.messages} />
@@ -86,6 +97,15 @@ class Chat extends Component {
 }
 
 export default Chat;
+
+function firebaseCbFunc(message) {
+  this.setState(prevState => {
+    let getMessage = message.val();
+    return {
+      messages: [{...getMessage, id:message.key}].concat(prevState.messages)
+    };
+  });
+}
 
 // Check type of the props pass from App
 Chat.propTypes = {
