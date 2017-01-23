@@ -22,7 +22,7 @@ class Chat extends Component {
   }
 
   // make a firebase call after mounting this component
-  componentDidMount() {
+  componentWillMount() {
     firebaseGetLastMessage(this.props.firebase, this.props.user.room, firebaseCbFunc, this);
   }
 
@@ -99,11 +99,9 @@ class Chat extends Component {
 export default Chat;
 
 function firebaseCbFunc(message) {
+  let lastMessage = message.val();
   this.setState(prevState => {
-    let getMessage = message.val();
-    return {
-      messages: [{...getMessage, id:message.key}].concat(prevState.messages)
-    };
+    return {messages: [{...lastMessage, id:message.key}].concat(prevState.messages)};
   });
 }
 
