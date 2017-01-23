@@ -16,6 +16,7 @@ export const messageSpec ={
     user_image_url: 'http://placekitten.com/200/200'
   },
   text: 'soy un nuevo mesanje del spec',
+  markdown: '##Hola soy un header',
   timestamp: '1483737061'
 }
 
@@ -56,13 +57,13 @@ export const firebaseGetAllMessages = (db, room, cb) => {
 // }
 
 // Create a listener a for every new message in the chat room and pass a callback
-export const firebaseGetLastMessage = (db, room, cb) => {
-  db.ref(makeChatRoute(room)).on('child_added', cb);
+export const firebaseGetLastMessage = (db, room, cb, context) => {
+  db.ref(makeChatRoute(room)).on('child_added', cb, () => {}, context);
 }
 
 // Turn off the listener for firebaseGetLastMessage()
-export const firebaseRemoveListener = (db, room, cb) => {
-  db.ref(makeChatRoute(room)).off('child_added', cb)
+export const firebaseRemoveListener = (db, room, cb, context) => {
+  db.ref(makeChatRoute(room)).off('child_added', cb, context)
 }
 
 // Push a new message to the chat room
