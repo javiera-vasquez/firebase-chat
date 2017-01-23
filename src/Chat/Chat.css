@@ -7,6 +7,9 @@
   padding: 0;
   height: 50px;
   line-height: 50px;
+  font-size: 22px;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 /* 50 channel + 100 input*/
@@ -31,7 +34,7 @@
   padding: 0;
   line-height: 1.6;
   font-size: 15px;
-  color: rgba(0, 0, 0, 0.7);
+  color: rgba(0, 0, 0, 0.8);
 }
 
 .loop-in-chat p strong {
@@ -59,4 +62,18 @@
   width: 20%;
   color: white;
   background-color: #FF1744;
+}
+
+.back-to-home {
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 3px;
+  margin-left: 20px;
+  padding: 5px 10px 4px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.back-to-home:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }

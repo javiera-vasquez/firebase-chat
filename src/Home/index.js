@@ -11,17 +11,13 @@ class Home extends Component {
   // ES6 class constructor
   constructor(props) {
     super(props);
-
     this.state = {
+      user: {},
       rooms: [],
-      isValidForm: false,
-      userName: '',
-      userAvatar: '',
-      roomSelected: undefined,
-      activeElements: {avatar: 0, room: 0},
-      placeHolders: this.placeHolders()
+      activeElements: {avatar: 0, room: 0}
     };
 
+    this.placeHolders = this.placeHolders();
     this.handleInputChange = this.handleInputChange.bind(this);
     this.selecAvatar = this.selecAvatar.bind(this);
     this.selectChatRoom = this.selectChatRoom.bind(this);
@@ -33,22 +29,25 @@ class Home extends Component {
     firebaseGetRooms(this.props.firebase).then(rooms => {
       this.setState({
         rooms: rooms,
-        userAvatar: this.state.placeHolders[0],
-        roomSelected: rooms[0]
-      });
+        user: {
+          ...this.props.user,
+          avatar: this.placeHolders[0],
+          room: rooms[0]
+        }
+      })
     });
   }
 
 
   // lisen for changes in the input name
   handleInputChange(event) {
-    this.setState({userName: event.target.value});
+    this.setState({user: {...this.state.user, name: event.target.value}});
   }
 
   // callback for the selected avatar
   selecAvatar(avatar, index) {
     this.setState({
-      userAvatar: avatar,
+      user: {...this.state.user, avatar: avatar},
       activeElements: {...this.state.activeElements, avatar: index}
     });
   }
@@ -56,18 +55,14 @@ class Home extends Component {
   // callback for the selected chat room
   selectChatRoom(room, index) {
     this.setState({
-      roomSelected: room,
+      user: {...this.state.user, room: room},
       activeElements: {...this.state.activeElements, room: index}
     });
   }
 
   // check the form and go to the selected chat room
   goToChatRoom() {
-    this.props.handleClick({
-      name: this.state.userName,
-      avatar: this.state.userAvatar,
-      room: this.state.roomSelected
-    });
+    this.props.handleClick(this.state.user, 'Chat');
   }
 
 
@@ -78,12 +73,12 @@ class Home extends Component {
         <input
           type="text"
           className="form-input"
-          value={this.state.userName}
+          value={this.state.user.name}
           onChange={this.handleInputChange}
           placeholder="Nombre de usuario"
         />
         <PlaceHolders
-          placeHolders={this.state.placeHolders}
+          placeHolders={this.placeHolders}
           handleClick={this.selecAvatar}
           activeElement={this.state.activeElements.avatar}
         />
@@ -92,7 +87,11 @@ class Home extends Component {
           handleClick={this.selectChatRoom}
           activeElement={this.state.activeElements.room}
         />
-        <button className="button call-to-action" onClick={this.goToChatRoom}>Ir al chat!</button>
+        <button
+          className="button call-to-action"
+          onClick={this.goToChatRoom}>
+          Ir al chat!
+        </button>
       </div>
     );
   }
